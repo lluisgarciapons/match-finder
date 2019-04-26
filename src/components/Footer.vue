@@ -1,0 +1,9 @@
+<template>
+  <v-footer app fixed>
+    <v-layout row wrap justify-center>
+      <v-flex xs12 text-xs-center black--text>
+        <span>Lluís Garcia - &copy; 2019</span>
+      </v-flex>
+    </v-layout>
+  </v-footer>
+</template>
