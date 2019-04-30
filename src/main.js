@@ -14,13 +14,13 @@ new Vue({
   methods: {
     ...mapActions("competitions", {
       getCompetitions: "getCompetitions"
-    }),
-    ...mapActions("matches", {
-      getTodayMatches: "getTodayMatches"
     })
+    // ...mapActions("matches", {
+    //   getTodayMatches: "getTodayMatches"
+    // })
   },
   created() {
     this.getCompetitions();
-    this.getTodayMatches();
+    // this.getTodayMatches();
   }
 }).$mount("#app");
