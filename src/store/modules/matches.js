@@ -2,12 +2,13 @@ import axios from "axios";
 
 const defaultState = {
   payload: [],
-  loading: false
+  loading: false,
+  selected: {}
 };
 
 const actions = {
   getTodayMatches: (context, date) => {
-    context.commit("LOADING");
+    context.commit("LOADING", true);
     // context.commit("LOADING");
     // let now = new Date();
     // let year = now.getFullYear();
@@ -26,6 +27,7 @@ const actions = {
       .then(response => {
         console.log("today's matches: ", response);
         context.commit("SAVE_MATCHES", response.data.matches);
+        context.commit("LOADING", false);
       })
       .catch(error => {
         console.log(error);
@@ -33,7 +35,7 @@ const actions = {
   },
 
   getCurrentMatchDayMatches: (context, matchDay) => {
-    context.commit("LOADING");
+    context.commit("LOADING", true);
     let competitionId = context.rootState.competitions.selected.id;
     axios({
       method: "GET",
@@ -45,6 +47,42 @@ const actions = {
       .then(response => {
         console.log(response);
         context.commit("SAVE_MATCHES", response.data.matches);
+        context.commit("LOADING", false);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
+
+  getMatchById: (context, id) => {
+    context.commit("LOADING", true);
+    axios({
+      method: "GET",
+      url: `http://api.football-data.org/v2/matches/${id}`,
+      headers: {
+        "X-Auth-Token": "3bcd6e5663a94bba833d420110684b01"
+      }
+    })
+      .then(response => {
+        console.log("selected match: ", response);
+        context.commit("SAVE_SEL_MATCH", response.data);
+
+        // When receive match info, dispatchs action from teams to get both home and away team
+        context.dispatch(
+          "teams/getTeamById",
+          { id: response.data.match.homeTeam.id, type: "homeTeam" },
+          {
+            root: true
+          }
+        );
+        context.dispatch(
+          "teams/getTeamById",
+          { id: response.data.match.awayTeam.id, type: "awayTeam" },
+          {
+            root: true
+          }
+        );
+        context.commit("LOADING", false);
       })
       .catch(error => {
         console.log(error);
@@ -58,14 +96,20 @@ const mutations = {
     state.loading = false;
   },
 
-  LOADING: state => {
-    state.loading = true;
+  SAVE_SEL_MATCH: (state, payload) => {
+    state.selected = payload;
+    state.loading = false;
+  },
+
+  LOADING: (state, payload) => {
+    state.loading = payload;
   }
 };
 
 const getters = {
   matches: state => state.payload,
-  loading: state => state.loading
+  loading: state => state.loading,
+  selectedMatch: state => state.selected.match
 };
 
 export default {

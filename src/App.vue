@@ -2,7 +2,7 @@
   <v-app id="inspire" dark>
     <Toolbar />
     <v-content>
-      <Home />
+      <router-view></router-view>
     </v-content>
     <Footer />
   </v-app>
@@ -11,12 +11,10 @@
 <script>
 import Toolbar from "./components/Toolbar.vue";
 import Footer from "./components/Footer.vue";
-import Home from "./views/Home";
 export default {
   components: {
     Toolbar,
-    Footer,
-    Home
+    Footer
   }
 };
 </script>
