@@ -1,5 +1,21 @@
 <template>
-  <pre>{{ match }}</pre>
+  <div>
+    <v-container>
+      <v-layout column align-center>
+        <v-flex>Top bar</v-flex>
+        <v-flex class="match-teams">
+          <v-layout justify-space-around>
+            <div>
+              <img class="team-logo" :src="homeTeam.crestUrl" alt="logo" />
+            </div>
+            <div>
+              <img class="team-logo" :src="awayTeam.crestUrl" alt="logo" />
+            </div>
+          </v-layout>
+        </v-flex>
+      </v-layout>
+    </v-container>
+  </div>
 </template>
 
 <script>
@@ -17,6 +33,10 @@ export default {
   computed: {
     ...mapGetters("matches", {
       match: "selectedMatch"
+    }),
+    ...mapGetters("teams", {
+      homeTeam: "homeTeam",
+      awayTeam: "awayTeam"
     }),
 
     date() {
@@ -66,3 +86,14 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.match-teams {
+  width: 100%;
+}
+
+.team-logo {
+  height: 100px;
+}
+</style>
+

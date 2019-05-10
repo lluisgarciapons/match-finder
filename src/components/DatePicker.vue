@@ -6,11 +6,15 @@
     lazy
     width="290px"
   >
+    <!-- solo / outline / "" -->
     <v-text-field
+      solo
+      :loading="loading"
       slot="activator"
       v-model="day"
-      label="Choose a date"
       prepend-icon="event"
+      color="pink lighten-1"
+      suffix="Choose Date"
       readonly
     ></v-text-field>
     <v-date-picker
@@ -33,18 +37,23 @@
   </v-dialog>
 </template>
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
       when: new Date().toISOString().substr(0, 10),
-      day: null,
+      day: new Date().toISOString().substr(0, 10),
       modal: false
     };
   },
   methods: {
     ...mapActions("matches", {
       getTodayMatches: "getTodayMatches"
+    })
+  },
+  computed: {
+    ...mapGetters("matches", {
+      loading: "loading"
     })
   }
 };

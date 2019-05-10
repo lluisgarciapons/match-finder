@@ -51,7 +51,7 @@ const getters = {
   loading: state => state.loading,
   selectedTeam: state => state.selected,
   homeTeam: state => state.homeTeam,
-  awayTeam: state => state.away
+  awayTeam: state => state.awayTeam
 };
 
 export default {
